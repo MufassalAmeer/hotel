@@ -1,58 +1,48 @@
 ﻿@{
-    Layout = null;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Charts</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js"></script>
-    <script>
 
-        var barChartData =
-            {
-                labels: [@Html.Raw(ViewBag.ObjectName)], //the names displayed on the x-axis, see images below
-                datasets: [{
-                    label: 'ProductWise Sales Count',
-                    backgroundColor: [
-                        "#f990a7",
-                        "#aad2ed",
-                        "#9966FF",
-                        "#99e5e5",
-                        "#f7bd83",
-                    ],
-                    borderWidth: 2,
-                    data: [@ViewBag.Data]  //what you returned back from controller. values displayed on the y-axis, see images below
-                }]
-            };
+<h3>Yearly Bookings</h3>
+<div class="col-lg-12">
+    <div class="row">
+        <div class="form-group">
+            <label>Yearly Chart</label>
+            <canvas id="barChart" width="400" height="150"></canvas>
+        </div>
+    </div>
+</div>
 
-            window.onload = function () {
-                var ctx1 = document.getElementById("barcanvas").getContext("2d");
-                window.myBar = new Chart(ctx1,
-                    {
-                        type: 'bar',
-                        data: barChartData,
-                        options:
-                            {
-                                title:
-                                {
-                                    display: true,
-                                    text: "ProductWise Sales Count"
-                                },
-                                responsive: true,
-                                maintainAspectRatio: true
-                            }
-                    });
-            }
-    </script>
-</head>
-<body>
-    <div style="text-align: center">
-        <canvas id="barcanvas"></canvas>
+@*<div class="col-lg-12">
+    <div class="row">
+        <label>Multi Bar Chart</label>
+        <canvas id="MultibarChart" width="400" height="150"></canvas>
     </div>
-    <div style="text-align: center">
-        Disclaimer:- This data is for demo it is
-        not real data it wont relate to any company
-    </div>
-</body>
-</html>  
+</div>*@
+
+@section scripts {
+<script src="~/Scripts/Chart.js"></script>
+<script src="~/Scripts/Common.js"></script>
+<script>
+
+    //-----Single Bar --------------
+    var c = document.getElementById("barChart");
+    var ctx = c.getContext("2d");
+    var tData = $.getValues("/bookings/lINEChartData");
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: tData
+    });
+
+    //-----Single Bar --------------
+    var c = document.getElementById("MultibarChart");
+    var ctx = c.getContext("2d");
+    var tData = $.getValues("/bookings/MultiLineChartData");
+    var myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: tData
+    });
+
+</script>
+}
+

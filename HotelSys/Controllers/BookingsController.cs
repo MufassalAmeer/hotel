@@ -188,6 +188,69 @@ namespace HotelSys.Controllers
             return View();
         }
 
+        public JsonResult LineChartData()
+        {
+
+            var results = db.Database.SqlQuery<Monthlysales>("SELECT YEAR(BookingFrom) as year,    SUM(Cost) AS Sum    FROM Bookings GROUP BY YEAR(BookingFrom)");
+            string[] years = results.Select(i => i.year.ToString()).ToArray();
+          
+           int[] sum = results.Select(i => Convert.ToInt32( i.Sum)).ToArray();
+         
+
+
+            Chart _chart = new Chart();
+            //_chart.labels = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December" };
+            _chart.labels = years;
+            _chart.datasets = new List<Datasets>();
+            List<Datasets> _dataSet = new List<Datasets>();
+            _dataSet.Add(new Datasets()
+            {
+                label = " Year",
+                //data = new int[] { 28, 48, 40, 19, 86, 27, 90, 20, 45, 65, 34, 22 },
+                data = sum,
+                backgroundColor = new string[] { "#FF0000", "#800000", "#808000", "#008080", "#800080", "#0000FF", "#000080", "#999999", "#E9967A", "#CD5C5C", "#1A5276", "#27AE60" },
+                borderColor = new string[] { "#FF0000", "#800000", "#808000", "#008080", "#800080", "#0000FF", "#000080", "#999999", "#E9967A", "#CD5C5C", "#1A5276", "#27AE60" },
+                borderWidth = "1"
+            });
+            _chart.datasets = _dataSet;
+            return Json(_chart, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult MultiLineChartData()
+        {
+            var results = db.Database.SqlQuery<Monthlysales>("SELECT YEAR(BookingFrom) as year,    SUM(Cost) AS Sum    FROM Bookings GROUP BY YEAR(BookingFrom)");
+
+            string[] months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December" };
+
+            int[] sum = results.Select(i => Convert.ToInt32(i.Sum)).ToArray();
+
+
+            Chart _chart = new Chart();
+            _chart.labels = months;
+            _chart.datasets = new List<Datasets>();
+            List<Datasets> _dataSet = new List<Datasets>();
+           
+            _dataSet.Add(new Datasets()
+            {
+                label = "Current Year",
+                data = new int[] { 28, 48, 40, 19, 86, 27, 90, 20, 45, 65, 34, 22 },
+                borderColor = new string[] { "rgba(75,192,192,1)", "#800000", "#808000", "#008080", "#800080", "#0000FF", "#000080", "#999999", "#E9967A", "#CD5C5C", "#1A5276", "#27AE60" },
+                backgroundColor = new string[] { "rgba(75,192,192,0.4)" , "#800000", "#808000", "#008080", "#800080", "#0000FF", "#000080", "#999999", "#E9967A", "#CD5C5C", "#1A5276", "#27AE60" },
+                borderWidth = "1"
+            });
+            _dataSet.Add(new Datasets()
+            {
+                label = "Last Year",
+                data = new int[] { 65, 59, 80, 81, 56, 55, 40, 55, 66, 77, 88, 34 },
+                borderColor = new string[] { "rgba(75,192,192,1)" },
+                backgroundColor = new string[] { "rgba(75,192,192,0.5)" , "#800000", "#808000", "#008080", "#800080", "#0000FF", "#000080", "#999999", "#E9967A", "#CD5C5C", "#1A5276", "#27AE60" },
+                borderWidth = "1"
+            });
+            _chart.datasets = _dataSet;
+            return Json(_chart, JsonRequestBehavior.AllowGet);
+        }
+
+       
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
