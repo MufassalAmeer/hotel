@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "monthly Bookings Report";
+}
+
+<h2>Monthly Bookings Report</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Year
+        </th>
+        <th>
+           Month
+        </th>
+        <th>
+          Total Bookings
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in ViewBag.res)
+    {
+        <tr>
+            <td>
+               @item.year
+            </td>
+            <td>
+                @{ 
+                    int month = item.month;
+                    string fullMonthName = new DateTime(2015, month, 1).ToString("MMMM");
+
+                }
+               @fullMonthName
+            </td>
+           <td>
+               @item.Sum
+            </td>
+         
+        </tr>
+    }
+
+</table>
