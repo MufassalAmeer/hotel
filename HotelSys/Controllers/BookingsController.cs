@@ -172,6 +172,21 @@ namespace HotelSys.Controllers
             ViewBag.res = results;
             return View();
         }
+        public ActionResult YearlyBookingsChart()
+        {
+            var results = db.Database.SqlQuery<Monthlysales>("SELECT YEAR(BookingFrom) as year,    SUM(Cost) AS Sum    FROM Bookings GROUP BY YEAR(BookingFrom)");
+            List<string> years = results.Select(i => i.year.ToString()).ToList();
+            ViewBag.years = years;
+
+            List<string> sum = results.Select(i => i.Sum.ToString()).ToList();
+            ViewBag.sum = sum;
+
+            ViewBag.res = results;
+
+            ViewBag.Data = "Value,Value1,Value2,Value3"; //list of strings that you need to show on the chart. as mentioned in the example from c-sharpcorner
+            ViewBag.ObjectName = "Test,Test1,Test2,Test3";
+            return View();
+        }
 
         protected override void Dispose(bool disposing)
         {

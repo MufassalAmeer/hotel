@@ -300,6 +300,7 @@
     <Content Include="Views\Bookings\Index.cshtml" />
     <Content Include="Views\Bookings\monthlyBookings.cshtml" />
     <Content Include="Views\Bookings\YearlyBookings.cshtml" />
+    <Content Include="Views\Bookings\YearlyBookingsChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
